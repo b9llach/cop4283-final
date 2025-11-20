@@ -1,0 +1,16 @@
+{
+  "feature_names": [
+    "wins",
+    "win_pct",
+    "ppg",
+    "opp_ppg",
+    "point_diff",
+    "fg_pct",
+    "ft_pct",
+    "fg3_pct",
+    "apg",
+    "rpg"
+  ],
+  "trained_date": "2025-11-19T17:08:33.055759",
+  "model_type": "RandomForestClassifier"
+}
