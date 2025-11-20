@@ -248,6 +248,12 @@ export default function Home() {
           >
             Historical Accuracy
           </Link>
+          <Link
+            href="/about"
+            className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full border border-gray-300 hover:border-black transition-colors"
+          >
+            About
+          </Link>
 
           <div className="flex items-center gap-3 ml-4">
             <label htmlFor="season-select" className="text-sm text-gray-600">

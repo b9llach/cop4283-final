@@ -25,12 +25,42 @@ export default function HistoricalPage() {
 
   const fetchHistorical = async () => {
     try {
-      const response = await fetch('http://localhost:8000/historical')
-      if (!response.ok) {
-        throw new Error('Failed to fetch historical data')
+      const seasonsResponse = await fetch('http://localhost:8000/seasons')
+      if (!seasonsResponse.ok) {
+        throw new Error('Failed to fetch seasons')
       }
-      const data = await response.json()
-      setHistorical(data)
+      const seasonsData = await seasonsResponse.json()
+      const seasonList = seasonsData.seasons
+
+      const dataPromises = seasonList.map(async (season: number) => {
+        const [championResponse, predictionsResponse] = await Promise.all([
+          fetch(`http://localhost:8000/actual-champion/${season}`),
+          fetch(`http://localhost:8000/predictions/${season}`)
+        ])
+
+        if (championResponse.ok && predictionsResponse.ok) {
+          const championData = await championResponse.json()
+          const predictionsData = await predictionsResponse.json()
+
+          const topPrediction = predictionsData[0]
+
+          return {
+            season: championData.season,
+            actual_champion: championData.actual_champion,
+            predicted_champion: championData.predicted_champion,
+            predicted_probability: topPrediction ? topPrediction.championship_probability : 0,
+            correct: championData.correct,
+            actual_champion_rank: championData.actual_rank,
+            actual_champion_probability: championData.actual_probability
+          }
+        }
+        return null
+      })
+
+      const results = await Promise.all(dataPromises)
+      const validChampions = results.filter(c => c && c.actual_champion) as HistoricalPrediction[]
+
+      setHistorical(validChampions.sort((a, b) => a.season - b.season))
       setLoading(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
@@ -231,6 +261,12 @@ export default function HistoricalPage() {
             className="px-5 py-2 bg-black text-white text-sm font-medium rounded-full"
           >
             Historical Accuracy
+          </Link>
+          <Link
+            href="/about"
+            className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full border border-gray-300 hover:border-black transition-colors"
+          >
+            About
           </Link>
         </div>
 

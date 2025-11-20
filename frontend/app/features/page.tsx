@@ -166,6 +166,12 @@ export default function FeaturesPage() {
           >
             Historical Accuracy
           </Link>
+          <Link
+            href="/about"
+            className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full border border-gray-300 hover:border-black transition-colors"
+          >
+            About
+          </Link>
         </div>
 
         {features.length > 0 && (

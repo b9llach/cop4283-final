@@ -248,7 +248,11 @@ async def get_feature_importance():
         lgbm_importance = lgbm_model.feature_importances_
         catboost_importance = catboost_model.feature_importances_
 
-        avg_importance = (xgb_importance + lgbm_importance + catboost_importance) / 3
+        xgb_norm = xgb_importance / xgb_importance.sum()
+        lgbm_norm = lgbm_importance / lgbm_importance.sum()
+        catboost_norm = catboost_importance / catboost_importance.sum()
+
+        avg_importance = (xgb_norm + lgbm_norm + catboost_norm) / 3
 
         importance = []
         for feat, imp in zip(feature_names, avg_importance):
