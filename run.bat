@@ -20,13 +20,22 @@ pip install -r requirements.txt
 REM Setup data if needed
 echo Checking for NBA dataset...
 python setup_data.py
+if %errorlevel% neq 0 (
+    echo.
+    echo ERROR: Data setup failed. Please check Kaggle API credentials.
+    echo See SETUP.md for instructions.
+    echo.
+    pause
+    exit /b 1
+)
 
 REM Start backend in new window
 echo Starting FastAPI backend on port 8000...
-start "NBA Predictor - Backend" cmd /k "call .venv\Scripts\activate.bat && python -m uvicorn backend.app.main:app --port 8000 --reload"
+echo If you get a port error, close any apps using port 8000
+start "NBA Predictor - Backend" cmd /k "call .venv\Scripts\activate.bat && python -m uvicorn backend.app.main:app --port 8000 --reload || echo ERROR: Port 8000 may be in use. Close other apps and try again. && pause"
 
 REM Wait a moment for backend to start
-timeout /t 3 /nobreak > nul
+timeout /t 5 /nobreak > nul
 
 REM Check if frontend dependencies are installed
 if not exist "frontend\node_modules" (
@@ -38,8 +47,9 @@ if not exist "frontend\node_modules" (
 
 REM Start frontend in new window
 echo Starting Next.js frontend on port 3000...
+echo If you get a port error, close any apps using port 3000
 cd frontend
-start "NBA Predictor - Frontend" cmd /k "npm run dev"
+start "NBA Predictor - Frontend" cmd /k "npm run dev || echo ERROR: Port 3000 may be in use. Close other apps and try again. && pause"
 cd ..
 
 echo.

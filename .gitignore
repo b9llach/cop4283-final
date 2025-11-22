@@ -16,9 +16,9 @@ data/
 *.sqlite
 *.sqlite3
 
-# Models
+# Models - Elite models are small enough to include in git
+# Only ignore large model files if created during training
 models/*.pkl
-models/*.joblib
 models/*.h5
 
 # Jupyter Notebook

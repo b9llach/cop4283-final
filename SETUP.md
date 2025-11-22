@@ -66,9 +66,16 @@ The first time you run the application:
 - Reinstall Node.js
 - Restart your computer after installing
 
-### Port already in use
-- Close any other applications using ports 3000 or 8000
-- Or change the ports in the run script
+### Port already in use (WinError 10013 on Windows)
+**This is the most common error on first run**
+- Close any applications using ports 3000 or 8000
+- Common culprits:
+  - Other web development servers
+  - Docker containers
+  - Other instances of this application
+- **On Windows**: Check Task Manager for node.exe or python.exe processes
+- **On Mac/Linux**: Run `lsof -i :8000` and `lsof -i :3000` to see what's using the ports
+- Kill those processes and try again
 
 ### Database errors
 - Delete the `data` folder
