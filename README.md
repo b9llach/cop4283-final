@@ -73,52 +73,88 @@ finalproject/
 
 ## 🚀 Quick Start
 
-Full-stack application with FastAPI backend and Next.js frontend:
+> **For group members**: See [SETUP.md](SETUP.md) for detailed setup instructions with screenshots and troubleshooting.
 
+### Option 1: Automated Setup (Recommended)
+
+**Windows:**
+```batch
+run.bat
+```
+
+**Linux/Mac:**
 ```bash
-# 1. Start backend (Terminal 1)
+chmod +x run.sh
+./run.sh
+```
+
+The script will automatically:
+- Create Python virtual environment
+- Install all dependencies (Python and Node.js)
+- Download NBA dataset from Kaggle (first run only)
+- Start backend on http://localhost:8000
+- Start frontend on http://localhost:3000
+
+### Option 2: Manual Setup
+
+**Terminal 1 - Backend:**
+```bash
+# Linux/Mac
 source .venv/bin/activate
 python -m uvicorn backend.app.main:app --port 8000 --reload
 
-# 2. Start frontend (Terminal 2)
+# Windows
+.venv\Scripts\activate
+python -m uvicorn backend.app.main:app --port 8000 --reload
+```
+
+**Terminal 2 - Frontend:**
+```bash
 cd frontend
 npm install
 npm run dev
-
-# 3. Visit http://localhost:3000
 ```
 
-The application features:
-- Interactive Vega-Lite visualizations
-- Championship predictions dashboard
-- Feature importance analysis
-- Historical accuracy tracking
+Visit http://localhost:3000 to use the application.
 
 ## 📦 Installation
 
 ### Prerequisites
-- Python 3.12+
-- Node.js 18+ (only for Next.js frontend)
-- ~1GB free disk space (for dataset)
+- **Python 3.12+** (Download from python.org)
+- **Node.js 18+** (Download from nodejs.org)
+- **Kaggle API credentials** (Required for data download)
+  - Create account at kaggle.com
+  - Go to Account Settings > API > Create New Token
+  - Place `kaggle.json` in `~/.kaggle/` (Linux/Mac) or `C:\Users\YourName\.kaggle\` (Windows)
+  - See [SETUP.md](SETUP.md) for detailed instructions
+- **~1GB free disk space** (for dataset)
 
-### Setup
+### First Time Setup
 
+1. **Download or clone this project**
+
+2. **Setup Kaggle API credentials** (see Prerequisites above)
+
+3. **Run the automated script** (see Quick Start above)
+   - The script handles all setup automatically
+   - Downloads dataset on first run
+   - Pre-trained models are included, no training needed
+
+### Optional: Train Model from Scratch
+
+If you want to retrain the model:
 ```bash
-# 1. Clone/Download project
-cd finalproject
+# Linux/Mac
+source .venv/bin/activate
 
-# 2. Create Python virtual environment
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# Windows
+.venv\Scripts\activate
 
-# 3. Install Python dependencies
-pip install -r requirements.txt
-
-# 4. Download dataset and train elite model (optional - models included)
+# Train elite ensemble model
 python backend/train_elite_model.py
 ```
 
-**Note**: Pre-trained elite ensemble models are included in `models/` directory, so you can skip training and jump straight to visualization!
+**Note**: Training takes approximately 10-15 minutes and requires the Kaggle NBA dataset (downloads automatically).
 
 ## API Endpoints
 
