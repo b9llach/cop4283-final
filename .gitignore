@@ -9,9 +9,8 @@ venv/
 ENV/
 env/
 
-# Data
+# Data - Keep prediction CSVs, exclude large database files
 data/
-*.csv
 *.db
 *.sqlite
 *.sqlite3

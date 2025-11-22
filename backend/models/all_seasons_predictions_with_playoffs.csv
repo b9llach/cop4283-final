@@ -1,0 +1,20 @@
+season,season_id,actual_champion,predicted_champion,predicted_probability,correct,actual_champion_rank,actual_champion_probability,training_seasons,made_playoffs_prev,playoff_rounds_prev
+2003,22003,San Antonio Spurs,San Antonio Spurs,0.3312455868935502,True,1,0.3312455868935502,3,0,0
+2004,22004,Detroit Pistons,Miami Heat,0.33547988837623444,False,9,0.02903842587441119,4,0,0
+2005,22005,San Antonio Spurs,Miami Heat,0.1328213166519441,False,2,0.08608142026274165,5,0,0
+2006,22006,Miami Heat,Cleveland Cavaliers,0.35822776259274197,False,8,0.02331465427470582,6,0,0
+2007,22007,San Antonio Spurs,Houston Rockets,0.33695002995903794,False,7,0.05783007338045407,7,0,0
+2008,22008,Boston Celtics,Orlando Magic,0.16522888604124117,False,7,0.028293401179107544,8,0,0
+2009,22009,Los Angeles Lakers,San Antonio Spurs,0.20894971737917822,False,4,0.1257835481661716,9,0,0
+2010,22010,Los Angeles Lakers,Chicago Bulls,0.5075064068534076,False,2,0.15889418536332295,10,0,0
+2011,22011,Dallas Mavericks,Los Angeles Clippers,0.2388113000158047,False,22,0.0,11,0,0
+2013,22013,Miami Heat,Indiana Pacers,0.17550581801475992,False,14,0.0196392710111457,12,0,0
+2014,22014,San Antonio Spurs,Chicago Bulls,0.11099114604311787,False,6,0.05392329474991444,13,0,0
+2015,22015,Golden State Warriors,Cleveland Cavaliers,0.18109312809487257,False,5,0.03617831499216994,14,0,0
+2016,22016,Cleveland Cavaliers,Golden State Warriors,0.2589895874748202,False,21,0.0,15,0,0
+2017,22017,Golden State Warriors,Golden State Warriors,0.16258885490605882,True,1,0.16258885490605882,16,0,0
+2018,22018,Golden State Warriors,Golden State Warriors,0.3407026503946631,True,1,0.3407026503946631,17,0,0
+2019,22019,Toronto Raptors,Los Angeles Lakers,0.16522517503660994,False,2,0.1169145998583078,18,0,0
+2020,22020,Los Angeles Lakers,Utah Jazz,0.22078909803730185,False,10,0.029385765789128965,19,0,0
+2021,22021,Milwaukee Bucks,Phoenix Suns,0.2773368916727438,False,7,0.07135772812711584,20,0,0
+2022,22022,Golden State Warriors,Boston Celtics,0.28031507563800767,False,8,0.053164733809624255,21,0,0

@@ -1,0 +1,20 @@
+season,season_id,actual_champion,predicted_champion,predicted_probability,correct,actual_champion_rank,actual_champion_probability,training_seasons
+2003,22003,San Antonio Spurs,San Antonio Spurs,0.3585090723585588,True,1,0.3585090723585588,3
+2004,22004,Detroit Pistons,Miami Heat,0.27596723232841014,False,7,0.039491525423728815,4
+2005,22005,San Antonio Spurs,Miami Heat,0.12793818187987344,False,5,0.05809309351644869,5
+2006,22006,Miami Heat,Cleveland Cavaliers,0.4562514171740348,False,7,0.038588127996006964,6
+2007,22007,San Antonio Spurs,Houston Rockets,0.3747969569867802,False,6,0.06761786393941023,7
+2008,22008,Boston Celtics,Orlando Magic,0.2647444385955465,False,8,0.0195,8
+2009,22009,Los Angeles Lakers,San Antonio Spurs,0.23809470990558482,False,4,0.0990444331039258,9
+2010,22010,Los Angeles Lakers,Chicago Bulls,0.5624269792946469,False,4,0.11768019968786513,10
+2011,22011,Dallas Mavericks,Los Angeles Clippers,0.2743238460371326,False,14,0.0,11
+2013,22013,Miami Heat,Memphis Grizzlies,0.29274220743756363,False,17,0.009555555555555557,12
+2014,22014,San Antonio Spurs,Chicago Bulls,0.16202985108730922,False,11,0.018776470588235294,13
+2015,22015,Golden State Warriors,Cleveland Cavaliers,0.2036075062644689,False,12,0.00950354609929078,14
+2016,22016,Cleveland Cavaliers,Golden State Warriors,0.23780050096258137,False,19,0.0,15
+2017,22017,Golden State Warriors,Golden State Warriors,0.14680482105769327,True,1,0.14680482105769327,16
+2018,22018,Golden State Warriors,Golden State Warriors,0.35785508657374193,True,1,0.35785508657374193,17
+2019,22019,Toronto Raptors,Los Angeles Lakers,0.1953316529739088,False,2,0.12609488012176676,18
+2020,22020,Los Angeles Lakers,Utah Jazz,0.2139065824516772,False,12,0.01,19
+2021,22021,Milwaukee Bucks,Phoenix Suns,0.29195862183909554,False,6,0.08526793445980158,20
+2022,22022,Golden State Warriors,Boston Celtics,0.3764278203286602,False,8,0.036652818637552854,21
