@@ -35,8 +35,13 @@ def setup_data():
 
         config_path = os.path.join(data_dir, "config.json")
         if not os.path.exists(config_path):
+            import json
+            config = {
+                "dataset_path": path.replace('\\', '/'),
+                "db_path": "data/nba.sqlite"
+            }
             with open(config_path, 'w') as f:
-                f.write('{"dataset_path": "' + path.replace('\\', '/') + '"}')
+                json.dump(config, f, indent=2)
             print("Configuration file created")
 
         print()
