@@ -8,12 +8,25 @@ team statistics, and historical analysis.
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 import joblib
 import pandas as pd
 import sqlite3
 import json
 from pathlib import Path
+
+TEAM_CONFERENCES = {
+    'Atlanta Hawks': 'East', 'Boston Celtics': 'East', 'Brooklyn Nets': 'East',
+    'Charlotte Hornets': 'East', 'Chicago Bulls': 'East', 'Cleveland Cavaliers': 'East',
+    'Detroit Pistons': 'East', 'Indiana Pacers': 'East', 'Miami Heat': 'East',
+    'Milwaukee Bucks': 'East', 'New York Knicks': 'East', 'Orlando Magic': 'East',
+    'Philadelphia 76ers': 'East', 'Toronto Raptors': 'East', 'Washington Wizards': 'East',
+    'Dallas Mavericks': 'West', 'Denver Nuggets': 'West', 'Golden State Warriors': 'West',
+    'Houston Rockets': 'West', 'Los Angeles Clippers': 'West', 'Los Angeles Lakers': 'West',
+    'Memphis Grizzlies': 'West', 'Minnesota Timberwolves': 'West', 'New Orleans Pelicans': 'West',
+    'Oklahoma City Thunder': 'West', 'Phoenix Suns': 'West', 'Portland Trail Blazers': 'West',
+    'Sacramento Kings': 'West', 'San Antonio Spurs': 'West', 'Utah Jazz': 'West'
+}
 
 app = FastAPI(
     title="NBA Championship Predictor API",
@@ -124,6 +137,10 @@ class PredictionResponse(BaseModel):
     ppg: float
     point_diff: float
     championship_probability: float
+    xgboost_probability: Optional[float] = None
+    lightgbm_probability: Optional[float] = None
+    catboost_probability: Optional[float] = None
+    conference: Optional[str] = None
 
 
 class TeamInfo(BaseModel):
@@ -201,7 +218,11 @@ async def get_predictions():
                 win_pct=row['win_pct'],
                 ppg=row['ppg'],
                 point_diff=row['point_diff'],
-                championship_probability=row['championship_probability']
+                championship_probability=row['championship_probability'],
+                xgboost_probability=row.get('xgboost_probability'),
+                lightgbm_probability=row.get('lightgbm_probability'),
+                catboost_probability=row.get('catboost_probability'),
+                conference=TEAM_CONFERENCES.get(row['full_name'])
             ))
 
         return predictions

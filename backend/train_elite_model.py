@@ -432,10 +432,14 @@ pred_catboost_2022 = catboost_model.predict_proba(X_2022_scaled)[:, 1]
 ensemble_pred_2022 = (pred_xgb_2022 + pred_lgbm_2022 + pred_catboost_2022) / 3
 
 season_2022['championship_probability'] = ensemble_pred_2022
+season_2022['xgboost_probability'] = pred_xgb_2022
+season_2022['lightgbm_probability'] = pred_lgbm_2022
+season_2022['catboost_probability'] = pred_catboost_2022
 season_2022 = season_2022.sort_values('championship_probability', ascending=False)
 
 output_cols = ['full_name', 'abbreviation', 'wins', 'win_pct', 'ppg', 'point_diff',
-               'championship_probability']
+               'championship_probability', 'xgboost_probability', 'lightgbm_probability',
+               'catboost_probability']
 season_2022[output_cols].to_csv(
     PROJECT_ROOT / "backend" / "models" / "latest_predictions_elite.csv",
     index=False

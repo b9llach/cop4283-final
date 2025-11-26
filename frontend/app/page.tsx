@@ -12,6 +12,10 @@ interface Prediction {
   ppg: number
   point_diff: number
   championship_probability: number
+  xgboost_probability?: number
+  lightgbm_probability?: number
+  catboost_probability?: number
+  conference?: string
 }
 
 interface SeasonsResponse {
@@ -35,6 +39,7 @@ export default function Home() {
   const [actualChampion, setActualChampion] = useState<ActualChampion | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [conferenceFilter, setConferenceFilter] = useState<string>('All')
 
   useEffect(() => {
     fetchSeasons()
@@ -92,9 +97,15 @@ export default function Home() {
     }
   }
 
-  const topContenders = predictions.slice(0, 10)
-  const playoffContenders = predictions.filter(p => p.championship_probability > 0.001)
-  const outsiders = predictions.filter(p => p.championship_probability <= 0.001)
+  const filteredPredictions = conferenceFilter === 'All'
+    ? predictions
+    : predictions.filter(p => p.conference === conferenceFilter)
+
+  const topContenders = filteredPredictions.slice(0, 10)
+  const playoffContenders = filteredPredictions.filter(p => p.championship_probability > 0.001)
+  const outsiders = filteredPredictions.filter(p => p.championship_probability <= 0.001)
+
+  const top5Teams = predictions.slice(0, 5)
 
   const probabilityChartSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -189,6 +200,143 @@ export default function Home() {
     height: 400
   }
 
+  // Radar Chart for Top 5 Team Comparison
+  const radarData = top5Teams.flatMap(team => [
+    { team: team.team_abbr, metric: 'Win %', value: team.win_pct },
+    { team: team.team_abbr, metric: 'PPG (scaled)', value: team.ppg / 120 },
+    { team: team.team_abbr, metric: 'Point Diff (scaled)', value: (team.point_diff + 10) / 20 },
+    { team: team.team_abbr, metric: 'Championship Prob', value: team.championship_probability }
+  ])
+
+  const radarChartSpec = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    title: {
+      text: 'Top 5 Teams - Multi-Metric Comparison',
+      fontSize: 18,
+      font: '-apple-system',
+      fontWeight: 600,
+      color: '#000'
+    },
+    data: { values: radarData },
+    layer: [
+      {
+        mark: { type: 'line', point: true },
+        encoding: {
+          x: { field: 'metric', type: 'nominal', title: null, axis: { labelAngle: -45, labelColor: '#000' } },
+          y: { field: 'value', type: 'quantitative', title: null, scale: { domain: [0, 1] }, axis: { format: '.0%', labelColor: '#6B7280' } },
+          color: { field: 'team', type: 'nominal', legend: { title: 'Team' } },
+          tooltip: [
+            { field: 'team', type: 'nominal', title: 'Team' },
+            { field: 'metric', type: 'nominal', title: 'Metric' },
+            { field: 'value', type: 'quantitative', title: 'Value', format: '.2%' }
+          ]
+        }
+      }
+    ],
+    width: 600,
+    height: 400
+  }
+
+  // Model Breakdown - XGBoost vs LightGBM vs CatBoost
+  const modelBreakdownData = top5Teams.flatMap(team => [
+    { team: team.team_abbr, model: 'XGBoost', probability: team.xgboost_probability || 0 },
+    { team: team.team_abbr, model: 'LightGBM', probability: team.lightgbm_probability || 0 },
+    { team: team.team_abbr, model: 'CatBoost', probability: team.catboost_probability || 0 },
+    { team: team.team_abbr, model: 'Ensemble', probability: team.championship_probability }
+  ])
+
+  const modelBreakdownSpec = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    title: {
+      text: 'Model Comparison - Top 5 Teams',
+      fontSize: 18,
+      font: '-apple-system',
+      fontWeight: 600,
+      color: '#000'
+    },
+    data: { values: modelBreakdownData },
+    mark: { type: 'bar', tooltip: true },
+    encoding: {
+      x: { field: 'team', type: 'nominal', title: null, axis: { labelColor: '#000' } },
+      y: { field: 'probability', type: 'quantitative', title: null, axis: { format: '.0%', labelColor: '#6B7280' } },
+      color: {
+        field: 'model',
+        type: 'nominal',
+        scale: { range: ['#9CA3AF', '#6B7280', '#4B5563', '#000'] },
+        legend: { title: 'Model' }
+      },
+      xOffset: { field: 'model' },
+      tooltip: [
+        { field: 'team', type: 'nominal', title: 'Team' },
+        { field: 'model', type: 'nominal', title: 'Model' },
+        { field: 'probability', type: 'quantitative', title: 'Probability', format: '.2%' }
+      ]
+    },
+    width: 600,
+    height: 400
+  }
+
+  // Conference Breakdown
+  const eastTeams = predictions.filter(p => p.conference === 'East')
+  const westTeams = predictions.filter(p => p.conference === 'West')
+  const eastTopProb = eastTeams.length > 0 ? eastTeams[0].championship_probability : 0
+  const westTopProb = westTeams.length > 0 ? westTeams[0].championship_probability : 0
+
+  const eastAvg = eastTeams.length > 0
+    ? eastTeams.slice(0, 5).reduce((sum, t) => sum + t.championship_probability, 0) / Math.min(5, eastTeams.length)
+    : 0
+  const westAvg = westTeams.length > 0
+    ? westTeams.slice(0, 5).reduce((sum, t) => sum + t.championship_probability, 0) / Math.min(5, westTeams.length)
+    : 0
+
+  const conferenceData = [
+    { conference: 'Eastern', metric: 'Top Team', value: eastTopProb },
+    { conference: 'Western', metric: 'Top Team', value: westTopProb },
+    { conference: 'Eastern', metric: 'Avg Top 5', value: eastAvg },
+    { conference: 'Western', metric: 'Avg Top 5', value: westAvg }
+  ]
+
+  const conferenceSpec = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    title: {
+      text: 'East vs West Conference Analysis',
+      fontSize: 18,
+      font: '-apple-system',
+      fontWeight: 600,
+      color: '#000'
+    },
+    data: { values: conferenceData.filter(d => !isNaN(d.value) && d.value !== null) },
+    mark: { type: 'bar', tooltip: true },
+    encoding: {
+      x: {
+        field: 'conference',
+        type: 'nominal',
+        title: null,
+        axis: { labelColor: '#000' }
+      },
+      y: {
+        field: 'value',
+        type: 'quantitative',
+        title: 'Championship Probability',
+        axis: { format: '.1%', labelColor: '#6B7280', titleColor: '#000' }
+      },
+      color: {
+        field: 'metric',
+        type: 'nominal',
+        scale: { range: ['#000', '#6B7280'] },
+        legend: { title: 'Metric' }
+      },
+      xOffset: { field: 'metric' },
+      tooltip: [
+        { field: 'conference', type: 'nominal', title: 'Conference' },
+        { field: 'metric', type: 'nominal', title: 'Metric' },
+        { field: 'value', type: 'quantitative', title: 'Probability', format: '.2%' }
+      ]
+    },
+    width: 600,
+    height: 400
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -272,6 +420,27 @@ export default function Home() {
               ))}
             </select>
           </div>
+
+          <div className="flex items-center gap-2 ml-4 border border-gray-300 rounded-full p-1">
+            <button
+              onClick={() => setConferenceFilter('All')}
+              className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${conferenceFilter === 'All' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => setConferenceFilter('East')}
+              className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${conferenceFilter === 'East' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+            >
+              East
+            </button>
+            <button
+              onClick={() => setConferenceFilter('West')}
+              className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${conferenceFilter === 'West' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+            >
+              West
+            </button>
+          </div>
         </div>
 
         {predictions.length > 0 && (
@@ -325,6 +494,27 @@ export default function Home() {
               </div>
             </div>
 
+            <div className="mb-8 text-center">
+              <h2 className="text-2xl font-semibold text-black mb-2">Advanced Analytics</h2>
+              <p className="text-gray-500 text-sm">Deep dive into model predictions and team comparisons</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+              <div className="bg-white border border-gray-200 rounded-xl p-8">
+                <VegaChart spec={radarChartSpec} />
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl p-8">
+                <VegaChart spec={modelBreakdownSpec} />
+              </div>
+            </div>
+
+            {conferenceData.some(d => d.value > 0) && (
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-16">
+                <VegaChart spec={conferenceSpec} />
+              </div>
+            )}
+
+
             <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-xl font-semibold text-black">All Teams</h2>
@@ -343,7 +533,7 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    {predictions.map((pred, idx) => {
+                    {filteredPredictions.map((pred, idx) => {
                       const isActualChampion = actualChampion?.actual_champion === pred.team_name
 
                       return (
