@@ -54,3 +54,11 @@ yarn-error.log*
 
 # Kaggle
 .kaggle/
+
+# Training artifacts
+catboost_info/
+
+# Root level node_modules (should only be in frontend/)
+/node_modules/
+/package.json
+/package-lock.json

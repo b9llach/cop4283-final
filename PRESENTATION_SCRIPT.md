@@ -28,14 +28,17 @@ These features capture what truly makes a championship team."
 
 **[Show model architecture/training info]**
 
-"For the prediction engine, an elite ensemble model was built combining three powerful algorithms:
-- XGBoost
-- LightGBM
-- CatBoost
+"For the prediction engine, an elite ensemble model was built combining three powerful machine learning algorithms:
 
-Each model was optimized using Optuna hyperparameter tuning with 30 trials to maximize performance.
+- **XGBoost** - Known for high accuracy and speed
+- **LightGBM** - Excellent at handling large datasets quickly
+- **CatBoost** - Great at preventing overfitting (when models memorize data instead of learning patterns)
 
-The results? The ensemble achieves a perfect 1.000 ROC-AUC score. This means the model perfectly ranks teams by championship probability based on regular season statistics.
+These are all gradient boosting models, which means they learn by making many small predictions and combining them. Think of it like getting advice from multiple experts and averaging their opinions.
+
+By using all three together, the ensemble gets the best of each algorithm. Each model was also fine-tuned with 30 optimization trials to maximize accuracy.
+
+The results? The ensemble achieves a perfect 1.000 ROC-AUC score (a metric that measures how well the model ranks teams, where 1.000 is perfect). This means the model perfectly ranks teams by championship probability based on regular season statistics.
 
 But here's the key insight from the model: **Defensive rebound rate is the number one predictor of championship success**. Defense truly wins championships."
 
@@ -101,7 +104,7 @@ The code is available on GitHub, and we're happy to answer any questions. Thank 
 **Key Points to Emphasize:**
 - 60,000+ games analyzed
 - 42 engineered features
-- Perfect 1.000 ROC-AUC
+- Perfect 1.000 ROC-AUC (perfect ranking score)
 - Defense (rebounds) as #1 predictor
 - Correctly predicted 2022 Warriors championship
 - Full-stack implementation (FastAPI + Next.js)

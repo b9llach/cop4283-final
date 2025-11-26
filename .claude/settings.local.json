@@ -6,7 +6,10 @@
       "Bash(source .venv/bin/activate)",
       "Bash(python backend/train_elite_model.py:*)",
       "Bash(.venv/Scripts/python backend/train_elite_model.py)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(.venvScriptspython backend/train_elite_model.py)",
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []
