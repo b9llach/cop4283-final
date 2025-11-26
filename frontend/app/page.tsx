@@ -428,18 +428,6 @@ export default function Home() {
             >
               All
             </button>
-            <button
-              onClick={() => setConferenceFilter('East')}
-              className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${conferenceFilter === 'East' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
-            >
-              East
-            </button>
-            <button
-              onClick={() => setConferenceFilter('West')}
-              className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${conferenceFilter === 'West' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
-            >
-              West
-            </button>
           </div>
         </div>
 
