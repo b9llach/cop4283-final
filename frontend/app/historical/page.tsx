@@ -19,10 +19,12 @@ export default function HistoricalPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // fetch historical data from backend
   useEffect(() => {
     fetchHistorical()
   }, [])
 
+  // fetch historical data from backend
   const fetchHistorical = async () => {
     try {
       const seasonsResponse = await fetch('http://localhost:8000/seasons')
@@ -68,6 +70,7 @@ export default function HistoricalPage() {
     }
   }
 
+  // timeline chart for prediction accuracy over time
   const timelineSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -113,6 +116,7 @@ export default function HistoricalPage() {
     height: 400
   }
 
+  // rank chart for actual champion rank in predictions
   const rankSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -156,6 +160,7 @@ export default function HistoricalPage() {
     height: 400
   }
 
+  // probability chart for actual champion probability distribution
   const probabilitySpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -197,6 +202,7 @@ export default function HistoricalPage() {
     height: 400
   }
 
+  // loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -208,6 +214,7 @@ export default function HistoricalPage() {
     )
   }
 
+  // error state
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -225,12 +232,14 @@ export default function HistoricalPage() {
     )
   }
 
+  // calculate accuracy, top-3 accuracy, and roc-auc score
   const correctPredictions = historical.filter(h => h.correct).length
   const totalPredictions = historical.length
   const accuracy = totalPredictions > 0 ? (correctPredictions / totalPredictions) * 100 : 0
   const top3Accuracy = historical.filter(h => h.actual_champion_rank <= 3).length
   const top3Rate = totalPredictions > 0 ? (top3Accuracy / totalPredictions) * 100 : 0
 
+  // return the historical page
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">

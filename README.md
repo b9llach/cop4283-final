@@ -2,7 +2,7 @@
 
 COP 4283 Data Science Final Project
 
-An end-to-end data science project that predicts NBA championship winners using machine learning and interactive visualizations.
+An end to end data science project that predicts NBA championship winners using machine learning and interactive visualizations.
 
 ## Overview
 
@@ -11,9 +11,18 @@ This project demonstrates the complete data science workflow:
 2. Data Processing: Advanced feature engineering with 42 elite metrics
 3. Analysis: Comprehensive Jupyter notebook with exploratory data analysis and insights
 4. Machine Learning: Elite ensemble models with perfect 1.000 ROC-AUC
-5. Visualization: Interactive web application with Vega-Lite dashboards
+5. Visualization: Interactive web application with Vega Lite dashboards
 
 Key Finding: Paint dominance is the #2 predictor of NBA championships (after wins/win%), showing that controlling the paint separates champions from contenders.
+
+## Dataset
+
+- [Basketball Dataset](https://www.kaggle.com/datasets/wyattowalsh/basketball)
+
+## Training
+
+- Trained with: 2x 4090 GPUs, 128GB of RAM, Ryzen 9 7950x3D
+- Training took approx. 5 minutes on this setup
 
 ## Tech Stack
 
@@ -27,13 +36,28 @@ Key Finding: Paint dominance is the #2 predictor of NBA championships (after win
 
 ### Frontend
 - Next.js 14 - React framework
-- TypeScript - Type-safe JavaScript
+- TypeScript - Type safe JavaScript
 - Tailwind CSS - Utility-first CSS framework
+- Vega-Embed - [Vega Framework for embedding](https://github.com/vega/vega-embed)
+
+### Documentation / Information Used
+- Vega-Embed - [Docs](https://vega.github.io/vega-embed/)
+- XGBoost - [Docs](https://xgboost.readthedocs.io/en/stable/tutorials/index.html)
+- LightGM - [Docs](https://lightgbm.readthedocs.io/en/stable/Python-Intro.html)
+- CatBoost - [Docs](https://catboost.ai/docs/en/)
+- Ensemble - [Docs 1](https://scikit-learn.org/stable/modules/ensemble.html), [Docs 2](https://ensemble-pytorch.readthedocs.io/en/latest/)
+- Optuna - [Docs](https://optuna.readthedocs.io/en/stable/tutorial/index.html)
+- AUC and ROC - [Docs 1](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc), [Docs 2](https://www.geeksforgeeks.org/machine-learning/auc-roc-curve/)
+- Next.js - [Docs](https://nextjs.org/docs)
+- Tailwind - [Docs](https://tailwindcss.com/docs/installation/using-vite)
+- Pandas - Class Presentations / Notes, [Docs](https://pandas.pydata.org/docs/)
+- Kagglehub - [Docs](https://github.com/Kaggle/kagglehub)
+- scikit-learn - [Docs](https://scikit-learn.org/stable/user_guide.html)
 
 ### Machine Learning
 - Model: Elite Ensemble (XGBoost + LightGBM + CatBoost)
 - Features: 42 advanced features including efficiency metrics, rebound rates, turnover differential, momentum, paint points, fast break points, second chance points
-- ROC-AUC: 1.000 (perfect discrimination)
+- ROC-AUC: 1.000 (perfect)
 - Optimization: Optuna hyperparameter tuning (30 trials per model)
 
 ## Project Structure
@@ -283,7 +307,7 @@ Response:
 List all NBA teams
 
 ### GET `/features`
-Get ensemble-averaged feature importance rankings
+Get ensemble averaged feature importance rankings
 
 ### GET `/historical`
 Get historical prediction accuracy across all seasons
@@ -395,13 +419,13 @@ Key Tables Used:
    - Aggregate by team-season
 
 3. **Elite Model Training**
-   - Algorithm: Ensemble of XGBoost, LightGBM, and CatBoost
-   - Features: 42 engineered elite metrics
-   - Preprocessing: StandardScaler
-   - Hyperparameter Optimization: Optuna (30 trials per model)
-   - Class balancing: scale_pos_weight
-   - Validation: 5-fold StratifiedKFold cross-validation
-   - Ensemble Method: Average predictions from 3 models
+   - Algorithm: Ensemble of XGBoost, LightGBM, and CatBoost, essentially 3 different AI models together for better results
+   - Features: 42 engineered elite metrics, helps make better decisions due to amount of features
+   - Preprocessing: StandardScaler, puts all numbers on a standard scale so its fair
+   - Hyperparameter Optimization: Optuna (30 trials per model), automatically runs tests to find the best settings for each model
+   - Class balancing: scale_pos_weight, teache the model to focus on the rare, better players, instead of ignoring them
+   - Validation: 5 fold StratifiedKFold cross validation, basically tests the logic 5 different times to make sure it stays consistent
+   - Ensemble Method: Average predictions from 3 models, gets us the final score
 
 ### Analysis Dimensions
 
@@ -434,7 +458,7 @@ Top 5 Features (by importance):
 Key Insights:
 
 1. Paint Dominance is the Differentiator
-   - Paint dominance (paint pts - opponent paint pts) is #2 feature
+   - Paint dominance (paint pts, opponent paint pts, paint defense) is #2 feature
    - Controlling the paint separates champions from contenders
    - Physical presence inside remains crucial despite three-point era
 
@@ -445,8 +469,8 @@ Key Insights:
 
 3. The Complete Package
    - Elite model uses 42 features to capture all aspects
-   - Fast break points, turnover differential, 3-point shooting
-   - No single stat dominates - basketball is multidimensional
+   - Fast break points, turnover differential, 3 point shooting
+   - No single stat dominates, basketball isn't just one thing
 
 ### Elite Model Performance
 
@@ -460,7 +484,7 @@ Metrics:
 - Hyperparameter Optimization: Optuna with 30 trials per model
 
 2021-22 Season Prediction:
-- Golden State Warriors: 65.95% probability
+- Our Prediction: Golden State Warriors
 - Result: CORRECT - Warriors won 2021-22 championship
 - Model correctly ranked them #1 before playoffs
 
@@ -474,44 +498,16 @@ Strengths:
 
 Limitations:
 Regular season stats don't capture:
-1. Playoff intensity - Different game in 7-game series
+1. Playoff intensity - Different game in best of 7 series
 2. Injuries - Key player injuries change everything
 3. Matchups - Some teams match up poorly against specific opponents
-4. Momentum - Hot/cold streaks at the right time
+4. Momentum - Hot/cold streaks at the during playoffs
 5. Coaching - Strategic adjustments in playoffs
 
 Key Takeaway: Elite model identifies championship contenders with exceptional accuracy. Perfect ROC-AUC means the probability rankings are optimal given regular season data.
-
-## Development
-
-### Running Tests
-```bash
-# Backend tests
-pytest
-
-# Frontend tests
-cd frontend && npm test
-```
-
-### Linting
-```bash
-# Python
-flake8 backend/
-
-# TypeScript/JavaScript
-cd frontend && npm run lint
-```
-
-## License
-
-This project is for educational purposes (class assignment).
 
 ## Acknowledgments
 
 - Kaggle for the NBA dataset
 - scikit-learn team for the ML library
 - FastAPI and Next.js communities
-
-## Contact
-
-For questions about this project, please contact the repository owner.

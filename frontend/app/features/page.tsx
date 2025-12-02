@@ -14,10 +14,12 @@ export default function FeaturesPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // fetch features from backend
   useEffect(() => {
     fetchFeatures()
   }, [])
 
+  // fetch features from backend
   const fetchFeatures = async () => {
     try {
       const response = await fetch('http://localhost:8000/features')
@@ -33,6 +35,7 @@ export default function FeaturesPage() {
     }
   }
 
+  // this is the spec for the bar chart, which is the top 20 features by importance
   const barChartSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -42,32 +45,33 @@ export default function FeaturesPage() {
       color: '#000',
       font: '-apple-system'
     },
-    data: { values: features.slice(0, 20) },
-    mark: { type: 'bar', tooltip: true, color: '#000' },
+    data: { values: features.slice(0, 20) }, // slice the features to the top 20
+    mark: { type: 'bar', tooltip: true, color: '#000' }, // type bar for the chart and tooltip for the chart
     encoding: {
       x: {
-        field: 'importance',
+        field: 'importance', // field is the importance of the feature
         type: 'quantitative',
         title: null,
-        axis: { format: '.2%', grid: false, labelColor: '#6B7280' }
+        axis: { format: '.2%', grid: false, labelColor: '#6B7280' } // format the axis to 2% and no grid and label color is gray
       },
       y: {
         field: 'feature',
         type: 'nominal',
         title: null,
-        sort: '-x',
+        sort: '-x', // sort the features by importance
         axis: { labelColor: '#000', labelFont: '-apple-system' }
       },
-      color: { value: '#000' },
+      color: { value: '#000' }, // color is black
       tooltip: [
-        { field: 'feature', type: 'nominal', title: 'Feature' },
-        { field: 'importance', type: 'quantitative', title: 'Importance', format: '.3%' }
+        { field: 'feature', type: 'nominal', title: 'Feature' }, // field is the feature and type is nominal and title is feature
+        { field: 'importance', type: 'quantitative', title: 'Importance', format: '.3%' } // field is the importance and type is quantitative and title is importance and format is 3%
       ]
     },
     width: 700,
     height: 600
   }
 
+  // this is the spec for the treemap, which is the distribution of the features by importance
   const treemapSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -77,36 +81,37 @@ export default function FeaturesPage() {
       color: '#000',
       font: '-apple-system'
     },
-    data: { values: features.slice(0, 15) },
-    mark: { type: 'rect', tooltip: true },
+    data: { values: features.slice(0, 15) }, // slice the features to the top 15
+    mark: { type: 'rect', tooltip: true }, // type rect for the chart and tooltip for the chart
     encoding: {
       x: {
-        field: 'feature',
+        field: 'feature', // field is the feature and type is nominal and title is feature
         type: 'nominal',
         title: null,
-        axis: { labelAngle: -45, labelColor: '#000', labelFont: '-apple-system' }
+        axis: { labelAngle: -45, labelColor: '#000', labelFont: '-apple-system' } // label angle is -45 and label color is black and label font is -apple-system
       },
       y: {
-        field: 'importance',
+        field: 'importance', // field is the importance and type is quantitative and title is importance
         type: 'quantitative',
         title: null,
-        axis: { format: '.1%', labelColor: '#6B7280' }
+        axis: { format: '.1%', labelColor: '#6B7280' } // format the axis to 1% and label color is gray
       },
       color: {
-        field: 'importance',
+        field: 'importance', // field is the importance and type is quantitative and scale is greys and legend is null
         type: 'quantitative',
         scale: { scheme: 'greys' },
-        legend: null
+        legend: null // legend is null
       },
       tooltip: [
-        { field: 'feature', type: 'nominal', title: 'Feature' },
-        { field: 'importance', type: 'quantitative', title: 'Importance', format: '.3%' }
+        { field: 'feature', type: 'nominal', title: 'Feature' }, // field is the feature and type is nominal and title is feature
+        { field: 'importance', type: 'quantitative', title: 'Importance', format: '.3%' } // field is the importance and type is quantitative and title is importance and format is 3%
       ]
     },
     width: 700,
     height: 400
   }
 
+  // loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -118,6 +123,7 @@ export default function FeaturesPage() {
     )
   }
 
+  // error state
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -135,6 +141,7 @@ export default function FeaturesPage() {
     )
   }
 
+  // return the features page
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">

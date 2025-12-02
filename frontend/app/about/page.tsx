@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
+// interface for the actual champion
+// just easier so we have it as a type instead of guessing (better for coding so i know what the data is)
 interface ActualChampion {
   season: number
   actual_champion: string | null
@@ -17,10 +19,12 @@ export default function AboutPage() {
   const [actualChampions, setActualChampions] = useState<ActualChampion[]>([])
   const [loading, setLoading] = useState(true)
 
+  // fetch data from backend
   useEffect(() => {
     fetchData()
   }, [])
 
+  // fetch data from backend
   const fetchData = async () => {
     try {
       const seasonsResponse = await fetch('http://localhost:8000/seasons')
@@ -48,12 +52,17 @@ export default function AboutPage() {
     }
   }
 
+  // calculate correct predictions, total predictions, accuracy, and top 3 accuracy and rate
   const correctPredictions = actualChampions.filter(c => c.correct).length
+  // calculate total predictions
   const totalPredictions = actualChampions.length
+  // calculate accuracy
   const accuracy = totalPredictions > 0 ? (correctPredictions / totalPredictions) * 100 : 0
+  // calculate top 3 accuracy and rate
   const top3Accuracy = actualChampions.filter(c => c.actual_rank && c.actual_rank <= 3).length
   const top3Rate = totalPredictions > 0 ? (top3Accuracy / totalPredictions) * 100 : 0
 
+  // return the about page
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">

@@ -52,6 +52,7 @@ export default function Home() {
     }
   }, [selectedSeason])
 
+  // fetch seasons from backend
   const fetchSeasons = async () => {
     try {
       const response = await fetch('http://localhost:8000/seasons')
@@ -67,6 +68,7 @@ export default function Home() {
     }
   }
 
+  // fetch predictions from backend
   const fetchPredictions = async (season: number) => {
     try {
       setLoading(true)
@@ -83,6 +85,7 @@ export default function Home() {
     }
   }
 
+  // fetch actual champion from backend
   const fetchActualChampion = async (season: number) => {
     try {
       const response = await fetch(`http://localhost:8000/actual-champion/${season}`)
@@ -97,16 +100,20 @@ export default function Home() {
     }
   }
 
+  // filter predictions by conference
   const filteredPredictions = conferenceFilter === 'All'
     ? predictions
     : predictions.filter(p => p.conference === conferenceFilter)
 
+  // top contenders chart
   const topContenders = filteredPredictions.slice(0, 10)
   const playoffContenders = filteredPredictions.filter(p => p.championship_probability > 0.001)
   const outsiders = filteredPredictions.filter(p => p.championship_probability <= 0.001)
 
+  // top 5 teams chart
   const top5Teams = predictions.slice(0, 5)
 
+  // probability chart for top 10 contenders
   const probabilityChartSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -144,6 +151,7 @@ export default function Home() {
     height: 400
   }
 
+  // win percentage vs championship probability scatter plot
   const winPctVsProbSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
@@ -174,13 +182,13 @@ export default function Home() {
         { field: 'win_pct', type: 'quantitative', title: 'Win %', format: '.1%' },
         { field: 'championship_probability', type: 'quantitative', title: 'Probability', format: '.2%' },
         { field: 'wins', type: 'quantitative', title: 'Wins', format: '.0f' }
-      ]
+      ] 
     },
     width: 'container',
     height: 400
   }
 
-  // Radar Chart for Top 5 Team Comparison
+  // radar chart for top 5 team comparison
   const radarData = top5Teams.flatMap(team => [
     { team: team.team_abbr, metric: 'Win %', value: team.win_pct },
     { team: team.team_abbr, metric: 'PPG (scaled)', value: team.ppg / 120 },
@@ -226,7 +234,7 @@ export default function Home() {
     height: 400
   }
 
-  // Model Breakdown - XGBoost vs LightGBM vs CatBoost
+  // model breakdown chart xgboost vs lightgbm vs catboost
   const modelBreakdownData = top5Teams.flatMap(team => [
     { team: team.team_abbr, model: 'XGBoost', probability: team.xgboost_probability || 0 },
     { team: team.team_abbr, model: 'LightGBM', probability: team.lightgbm_probability || 0 },
