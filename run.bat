@@ -1,63 +1,110 @@
 @echo off
+setlocal enabledelayedexpansion
+
 echo NBA Championship Predictor
-echo ==========================
+echo ===========================
 echo.
 
-REM Check if virtual environment exists
-if not exist ".venv" (
-    echo Creating Python virtual environment...
-    python -m venv .venv
-)
-
-REM Activate virtual environment
-echo Activating virtual environment...
-call .venv\Scripts\activate.bat
-
-REM Install Python dependencies
-echo Installing Python dependencies...
-pip install -r requirements.txt
-
-REM Setup data if needed
-echo Checking for NBA dataset...
-python setup_data.py
-if %errorlevel% neq 0 (
-    echo.
-    echo ERROR: Data setup failed. Please check Kaggle API credentials.
-    echo See SETUP.md for instructions.
-    echo.
+REM Check Python is installed
+python --version >nul 2>&1
+if errorlevel 1 (
+    echo ERROR: Python not found! Install Python first.
     pause
     exit /b 1
 )
 
-REM Start backend in new window
-echo Starting FastAPI backend on port 8000...
-echo If you get a port error, close any apps using port 8000
-start "NBA Predictor - Backend" cmd /k "call .venv\Scripts\activate.bat && python -m uvicorn backend.app.main:app --port 8000 --reload || echo ERROR: Port 8000 may be in use. Close other apps and try again. && pause"
-
-REM Wait a moment for backend to start
-timeout /t 5 /nobreak > nul
-
-REM Check if frontend dependencies are installed
-if not exist "frontend\node_modules" (
-    echo Installing frontend dependencies...
-    cd frontend
-    call npm install
-    cd ..
+REM Create venv if needed
+if not exist ".venv" (
+    echo [1/4] Creating Python virtual environment...
+    python -m venv .venv
+    if errorlevel 1 (
+        echo ERROR: Failed to create virtual environment
+        pause
+        exit /b 1
+    )
+    echo Virtual environment created!
+) else (
+    echo [1/4] Virtual environment exists
 )
 
-REM Start frontend in new window
-echo Starting Next.js frontend on port 3000...
-echo If you get a port error, close any apps using port 3000
-cd frontend
-start "NBA Predictor - Frontend" cmd /k "npm run dev || echo ERROR: Port 3000 may be in use. Close other apps and try again. && pause"
-cd ..
+REM Activate venv
+echo [2/4] Activating virtual environment...
+if exist ".venv\Scripts\activate.bat" (
+    call .venv\Scripts\activate.bat
+) else (
+    echo ERROR: activate.bat not found
+    pause
+    exit /b 1
+)
+
+REM Install Python packages if needed
+echo [3/4] Checking Python packages...
+python -c "import catboost" >nul 2>&1
+if errorlevel 1 (
+    echo Installing Python packages (this may take a few minutes)...
+    pip install --no-cache-dir pandas numpy scikit-learn xgboost lightgbm catboost joblib fastapi uvicorn pydantic python-multipart
+    if errorlevel 1 (
+        echo WARNING: Some packages failed to install
+        echo Trying to continue anyway...
+    )
+) else (
+    echo Python packages OK
+)
+
+REM Check Node.js installed
+where npm >nul 2>&1
+if errorlevel 1 (
+    echo ERROR: Node.js/npm not found! Install Node.js first.
+    pause
+    exit /b 1
+)
+
+REM Install frontend if needed
+echo [4/4] Checking frontend packages...
+if not exist "frontend\node_modules" (
+    echo Installing frontend packages...
+    cd frontend
+    call npm install
+    if errorlevel 1 (
+        cd ..
+        echo ERROR: npm install failed
+        pause
+        exit /b 1
+    )
+    cd ..
+    echo Frontend packages installed!
+) else (
+    echo Frontend packages OK
+)
 
 echo.
-echo ==========================
-echo Application is running!
-echo Frontend: http://localhost:3000
-echo Backend:  http://localhost:8000
-echo ==========================
+echo ===========================
+echo Starting servers...
+echo ===========================
 echo.
-echo Close the backend and frontend windows to stop the servers
-pause
+
+REM Start backend
+echo Starting backend...
+start "Backend API" cmd /k "cd /d "%~dp0" && call .venv\Scripts\activate.bat && python -m uvicorn backend.app.main:app --port 8000 --reload"
+
+REM Wait
+timeout /t 5 /nobreak >nul
+
+REM Start frontend
+echo Starting frontend...
+start "Frontend Web" cmd /k "cd /d "%~dp0frontend" && npm run dev"
+
+REM Wait and open browser
+timeout /t 5 /nobreak >nul
+echo Opening browser...
+start http://localhost:3000
+
+echo.
+echo ===========================
+echo SUCCESS!
+echo Website: http://localhost:3000
+echo Backend: http://localhost:8000
+echo ===========================
+echo.
+echo Press any key to exit (servers will keep running)
+pause >nul

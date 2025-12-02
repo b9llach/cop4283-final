@@ -1,0 +1,12 @@
+# Optional: Only needed for Jupyter notebook interactive features
+# Install ONLY if you want to run nba_championship_analysis.ipynb
+
+# Data Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+
+# Jupyter (use notebook instead of full jupyter to reduce dependencies)
+notebook>=7.0.0
+ipykernel>=6.25.0
+ipywidgets>=8.1.0
