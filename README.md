@@ -109,16 +109,9 @@ Windows:
 run.bat
 ```
 
-Linux/Mac:
-```bash
-chmod +x run.sh
-./run.sh
-```
-
 The script will automatically:
 - Create Python virtual environment
 - Install all dependencies (Python and Node.js)
-- Download NBA dataset from Kaggle (first run only)
 - Start backend on http://localhost:8000
 - Start frontend on http://localhost:3000
 
