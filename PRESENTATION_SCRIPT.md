@@ -40,7 +40,7 @@ By using all three together, the ensemble gets the best of each algorithm. Each 
 
 The results? The ensemble achieves a perfect 1.000 ROC-AUC score (a metric that measures how well the model ranks teams, where 1.000 is perfect). This means the model perfectly ranks teams by championship probability based on regular season statistics.
 
-But here's the key insight from the model: **Defensive rebound rate is the number one predictor of championship success**. Defense truly wins championships."
+But here's the key insight from the model: While wins and win percentage are the top predictors, **paint dominance is the number two feature**. This means controlling the paint - both offensively and defensively - is what separates championship teams from good teams. Rebound differential and defensive pressure round out the top 5, showing that championships require the complete package."
 
 ---
 
@@ -105,7 +105,7 @@ The code is available on GitHub, and we're happy to answer any questions. Thank 
 - 60,000+ games analyzed
 - 42 engineered features
 - Perfect 1.000 ROC-AUC (perfect ranking score)
-- Defense (rebounds) as #1 predictor
+- Paint dominance as #2 predictor (after wins/win%)
 - Correctly predicted 2022 Warriors championship
 - Full-stack implementation (FastAPI + Next.js)
 

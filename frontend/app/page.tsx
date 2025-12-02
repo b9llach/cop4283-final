@@ -110,7 +110,7 @@ export default function Home() {
   const probabilityChartSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
-      text: `Top 10 Championship Contenders (${selectedSeason})`,
+      text: `Top 10 Contenders (${selectedSeason})`,
       fontSize: 18,
       font: '-apple-system',
       fontWeight: 600,
@@ -140,63 +140,43 @@ export default function Home() {
         { field: 'win_pct', type: 'quantitative', title: 'Win %', format: '.1%' }
       ]
     },
-    width: 600,
+    width: 'container',
     height: 400
   }
 
   const winPctVsProbSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
-      text: 'Win Percentage vs Championship Probability',
+      text: 'Win % vs Championship Probability',
       fontSize: 18,
       font: '-apple-system',
       fontWeight: 600,
       color: '#000'
     },
     data: { values: playoffContenders },
-    layer: [
-      {
-        mark: { type: 'point', filled: true, size: 100, tooltip: true, color: '#000' },
-        encoding: {
-          x: {
-            field: 'win_pct',
-            type: 'quantitative',
-            title: 'Win Percentage',
-            axis: { format: '.0%', grid: true, gridColor: '#f3f4f6', labelColor: '#6B7280', titleColor: '#000' },
-            scale: { domain: [0.3, 0.85] }
-          },
-          y: {
-            field: 'championship_probability',
-            type: 'quantitative',
-            title: 'Championship Probability',
-            axis: { format: '.0%', grid: true, gridColor: '#f3f4f6', labelColor: '#6B7280', titleColor: '#000' }
-          },
-          color: { value: '#000' },
-          tooltip: [
-            { field: 'team_name', type: 'nominal', title: 'Team' },
-            { field: 'win_pct', type: 'quantitative', title: 'Win %', format: '.1%' },
-            { field: 'championship_probability', type: 'quantitative', title: 'Probability', format: '.2%' }
-          ]
-        }
+    mark: { type: 'point', filled: true, size: 100, tooltip: true, color: '#000' },
+    encoding: {
+      x: {
+        field: 'win_pct',
+        type: 'quantitative',
+        title: 'Win Percentage',
+        axis: { format: '.0%', grid: true, gridColor: '#f3f4f6', labelColor: '#6B7280', titleColor: '#000' }
       },
-      {
-        mark: { type: 'text', align: 'left', dx: 7, dy: -7, fontSize: 10, fontWeight: 400 },
-        encoding: {
-          x: { field: 'win_pct', type: 'quantitative' },
-          y: { field: 'championship_probability', type: 'quantitative' },
-          text: { field: 'team_abbr', type: 'nominal' },
-          color: { value: '#6B7280' },
-          opacity: {
-            condition: {
-              test: 'datum.championship_probability > 0.05',
-              value: 1
-            },
-            value: 0
-          }
-        }
-      }
-    ],
-    width: 600,
+      y: {
+        field: 'championship_probability',
+        type: 'quantitative',
+        title: 'Championship Probability',
+        axis: { format: '.0%', grid: true, gridColor: '#f3f4f6', labelColor: '#6B7280', titleColor: '#000' }
+      },
+      color: { value: '#000' },
+      tooltip: [
+        { field: 'team_name', type: 'nominal', title: 'Team' },
+        { field: 'win_pct', type: 'quantitative', title: 'Win %', format: '.1%' },
+        { field: 'championship_probability', type: 'quantitative', title: 'Probability', format: '.2%' },
+        { field: 'wins', type: 'quantitative', title: 'Wins', format: '.0f' }
+      ]
+    },
+    width: 'container',
     height: 400
   }
 
@@ -211,29 +191,38 @@ export default function Home() {
   const radarChartSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
-      text: 'Top 5 Teams - Multi-Metric Comparison',
+      text: 'Top 5 Teams Comparison (Click Legend)',
       fontSize: 18,
       font: '-apple-system',
       fontWeight: 600,
       color: '#000'
     },
     data: { values: radarData },
-    layer: [
-      {
-        mark: { type: 'line', point: true },
-        encoding: {
-          x: { field: 'metric', type: 'nominal', title: null, axis: { labelAngle: -45, labelColor: '#000' } },
-          y: { field: 'value', type: 'quantitative', title: null, scale: { domain: [0, 1] }, axis: { format: '.0%', labelColor: '#6B7280' } },
-          color: { field: 'team', type: 'nominal', legend: { title: 'Team' } },
-          tooltip: [
-            { field: 'team', type: 'nominal', title: 'Team' },
-            { field: 'metric', type: 'nominal', title: 'Metric' },
-            { field: 'value', type: 'quantitative', title: 'Value', format: '.2%' }
-          ]
-        }
-      }
-    ],
-    width: 600,
+    params: [{
+      name: 'team_selection',
+      select: { type: 'point', fields: ['team'] },
+      bind: 'legend'
+    }],
+    mark: { type: 'line', point: true },
+    encoding: {
+      x: { field: 'metric', type: 'nominal', title: null, axis: { labelAngle: -45, labelColor: '#000' } },
+      y: { field: 'value', type: 'quantitative', title: null, scale: { domain: [0, 1] }, axis: { format: '.0%', labelColor: '#6B7280' } },
+      color: { field: 'team', type: 'nominal', legend: { title: 'Team (Click to Filter)' } },
+      opacity: {
+        condition: { param: 'team_selection', value: 1 },
+        value: 0.2
+      },
+      strokeWidth: {
+        condition: { param: 'team_selection', value: 3 },
+        value: 1
+      },
+      tooltip: [
+        { field: 'team', type: 'nominal', title: 'Team' },
+        { field: 'metric', type: 'nominal', title: 'Metric' },
+        { field: 'value', type: 'quantitative', title: 'Value', format: '.2%' }
+      ]
+    },
+    width: 'container',
     height: 400
   }
 
@@ -245,34 +234,49 @@ export default function Home() {
     { team: team.team_abbr, model: 'Ensemble', probability: team.championship_probability }
   ])
 
-  const modelBreakdownSpec = {
+  const statsComparisonData = top5Teams.flatMap(team => [
+    { team: team.team_abbr, metric: 'Championship %', value: team.championship_probability },
+    { team: team.team_abbr, metric: 'Win %', value: team.win_pct },
+    { team: team.team_abbr, metric: 'Point Diff (scaled)', value: Math.max(0, (team.point_diff + 10) / 20) }
+  ])
+
+  const statsComparisonSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
-      text: 'Model Comparison - Top 5 Teams',
+      text: 'Top 5 Stats Comparison (Click Legend)',
       fontSize: 18,
       font: '-apple-system',
       fontWeight: 600,
       color: '#000'
     },
-    data: { values: modelBreakdownData },
+    data: { values: statsComparisonData },
+    params: [{
+      name: 'metric_select',
+      select: { type: 'point', fields: ['metric'] },
+      bind: 'legend'
+    }],
     mark: { type: 'bar', tooltip: true },
     encoding: {
       x: { field: 'team', type: 'nominal', title: null, axis: { labelColor: '#000' } },
-      y: { field: 'probability', type: 'quantitative', title: null, axis: { format: '.0%', labelColor: '#6B7280' } },
+      y: { field: 'value', type: 'quantitative', title: null, axis: { format: '.0%', labelColor: '#6B7280' } },
       color: {
-        field: 'model',
+        field: 'metric',
         type: 'nominal',
-        scale: { range: ['#9CA3AF', '#6B7280', '#4B5563', '#000'] },
-        legend: { title: 'Model' }
+        scale: { range: ['#000', '#4B5563', '#9CA3AF'] },
+        legend: { title: 'Metric (Click to Filter)' }
       },
-      xOffset: { field: 'model' },
+      opacity: {
+        condition: { param: 'metric_select', value: 1 },
+        value: 0.2
+      },
+      xOffset: { field: 'metric' },
       tooltip: [
         { field: 'team', type: 'nominal', title: 'Team' },
-        { field: 'model', type: 'nominal', title: 'Model' },
-        { field: 'probability', type: 'quantitative', title: 'Probability', format: '.2%' }
+        { field: 'metric', type: 'nominal', title: 'Metric' },
+        { field: 'value', type: 'quantitative', title: 'Value', format: '.2%' }
       ]
     },
-    width: 600,
+    width: 'container',
     height: 400
   }
 
@@ -299,13 +303,20 @@ export default function Home() {
   const conferenceSpec = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     title: {
-      text: 'East vs West Conference Analysis',
+      text: 'East vs West Analysis (Click Legend)',
       fontSize: 18,
       font: '-apple-system',
       fontWeight: 600,
       color: '#000'
     },
     data: { values: conferenceData.filter(d => !isNaN(d.value) && d.value !== null) },
+    params: [
+      {
+        name: 'metric_selection',
+        select: { type: 'point', fields: ['metric'] },
+        bind: 'legend'
+      }
+    ],
     mark: { type: 'bar', tooltip: true },
     encoding: {
       x: {
@@ -324,7 +335,14 @@ export default function Home() {
         field: 'metric',
         type: 'nominal',
         scale: { range: ['#000', '#6B7280'] },
-        legend: { title: 'Metric' }
+        legend: { title: 'Metric (Click to Filter)' }
+      },
+      opacity: {
+        condition: {
+          param: 'metric_selection',
+          value: 1
+        },
+        value: 0.2
       },
       xOffset: { field: 'metric' },
       tooltip: [
@@ -333,7 +351,7 @@ export default function Home() {
         { field: 'value', type: 'quantitative', title: 'Probability', format: '.2%' }
       ]
     },
-    width: 600,
+    width: 'container',
     height: 400
   }
 
@@ -492,7 +510,7 @@ export default function Home() {
                 <VegaChart spec={radarChartSpec} />
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <VegaChart spec={modelBreakdownSpec} />
+                <VegaChart spec={statsComparisonSpec} />
               </div>
             </div>
 

@@ -9,7 +9,10 @@
       "Bash(python:*)",
       "Bash(.venvScriptspython backend/train_elite_model.py)",
       "Bash(.venv/Scripts/python.exe:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(del:*)",
+      "Bash(npm run dev)"
     ],
     "deny": [],
     "ask": []

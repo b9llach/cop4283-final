@@ -9,6 +9,10 @@ venv/
 ENV/
 env/
 
+# Claude
+CLAUDE.md
+.claude/
+
 # Data - Keep prediction CSVs, exclude large database files
 data/
 *.db

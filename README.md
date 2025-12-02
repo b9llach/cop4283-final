@@ -9,10 +9,11 @@ An end-to-end data science project that predicts NBA championship winners using 
 This project demonstrates the complete data science workflow:
 1. **Data Collection**: 60,000+ NBA games from Kaggle dataset
 2. **Data Processing**: Advanced feature engineering with 42 elite metrics
-3. **Analysis**: Elite ensemble machine learning models with perfect 1.000 ROC-AUC
-4. **Visualization**: Interactive Vega-Lite dashboards with modern NBA-themed design
+3. **Analysis**: Comprehensive Jupyter notebook with exploratory data analysis and insights
+4. **Machine Learning**: Elite ensemble models with perfect 1.000 ROC-AUC
+5. **Visualization**: Interactive web application with Vega-Lite dashboards
 
-**Key Finding**: Defensive rebound rate is the #1 predictor of NBA championships.
+**Key Finding**: Paint dominance is the #2 predictor of NBA championships (after wins/win%), showing that controlling the paint separates champions from contenders.
 
 ## Tech Stack
 
@@ -39,6 +40,7 @@ This project demonstrates the complete data science workflow:
 
 ```
 finalproject/
+├── nba_championship_analysis.ipynb  # 📊 Jupyter notebook with full analysis
 ├── backend/
 │   ├── app/
 │   │   └── main.py                  # FastAPI application
@@ -61,6 +63,7 @@ finalproject/
 │   ├── package.json
 │   └── next.config.js
 ├── data/
+│   ├── nba.sqlite                   # NBA database (2.2GB, downloaded automatically)
 │   └── config.json
 ├── models/
 │   ├── xgboost_elite.joblib         # XGBoost component
@@ -116,6 +119,68 @@ npm run dev
 ```
 
 Visit http://localhost:3000 to use the application.
+
+## 📊 Data Analysis Notebook
+
+**Jupyter Notebook**: `nba_championship_analysis.ipynb`
+
+A comprehensive analysis notebook demonstrating the complete data science workflow:
+
+### Sections Covered:
+1. **Data Acquisition & Preparation**
+   - Database exploration (60,000+ games)
+   - Data quality checks
+   - Championship winners mapping (2003-2022)
+
+2. **Exploratory Data Analysis**
+   - Scoring trends over 20 seasons
+   - Three-point revolution analysis
+   - Home court advantage statistics
+
+3. **Feature Engineering**
+   - 42 advanced features across 5 categories
+   - Core performance, efficiency metrics, elite additions
+   - Feature calculation methodology
+
+4. **Model Development**
+   - Elite ensemble architecture (XGBoost + LightGBM + CatBoost)
+   - Hyperparameter optimization with Optuna
+   - Cross-validation and performance metrics
+
+5. **Model Evaluation**
+   - ROC-AUC metric explanation
+   - Historical accuracy analysis
+   - Model strengths and limitations
+
+6. **Feature Importance Analysis**
+   - Top 15 features ranked by importance
+   - Paint dominance as key differentiator
+   - Basketball analytics insights
+
+7. **Championship Predictions**
+   - 2021-22 season predictions
+   - Conference comparison (East vs West)
+   - Top contenders visualization
+
+8. **Key Insights & Conclusions**
+   - What makes a championship team?
+   - Model performance summary
+   - Future enhancements
+
+### How to Use:
+```bash
+# Install Jupyter (included in requirements.txt)
+pip install jupyter
+
+# Launch notebook
+jupyter notebook nba_championship_analysis.ipynb
+```
+
+**Interactive Features**:
+- Executable code cells
+- Matplotlib/Seaborn visualizations
+- Statistical analysis outputs
+- Markdown narrative with insights
 
 ## 📦 Installation
 
@@ -272,16 +337,18 @@ The model was trained on championship data from 2002-2022, including:
 ## Features
 
 ### Current Implementation
-- ✅ Historical NBA data analysis (2003-2022)
-- ✅ Elite ensemble machine learning (XGBoost + LightGBM + CatBoost)
-- ✅ Hyperparameter optimization with Optuna
-- ✅ REST API for predictions with FastAPI
-- ✅ Modern NBA-themed web interface
-- ✅ Interactive Vega-Lite visualizations
-- ✅ Season-by-season predictions and accuracy
-- ✅ Feature importance analysis
-- ✅ Dynamic season selector
-- ✅ Real-time championship probability calculations
+- ✅ **Comprehensive Jupyter notebook** with full data science workflow
+- ✅ **Historical NBA data analysis** (2003-2022, 60,000+ games)
+- ✅ **Elite ensemble machine learning** (XGBoost + LightGBM + CatBoost)
+- ✅ **Hyperparameter optimization** with Optuna (30 trials per model)
+- ✅ **REST API** for predictions with FastAPI
+- ✅ **Modern web interface** with NBA-themed design
+- ✅ **Interactive Vega-Lite visualizations** with tooltips
+- ✅ **Season selector** (2003-2022 historical data)
+- ✅ **Conference filter** (East/West/All)
+- ✅ **Feature importance rankings** (42 features)
+- ✅ **Real-time championship probability** calculations
+- ✅ **Multiple pages**: Predictions, Features, Historical Accuracy, About
 
 ### Potential Enhancements
 - Add player-level statistics
@@ -357,22 +424,26 @@ The model was trained on championship data from 2002-2022, including:
 
 ### What Wins Championships?
 
-**1. Defense Wins Championships (Literally)**
-- Defensive rebound rate: #1 feature in elite ensemble
-- Controlling boards limits opponent second-chance points
-- Elite teams dominate defensive glass and transition defense
+**Top 5 Features (by importance):**
+1. **Wins** - Championship teams win games (obviously)
+2. **Paint Dominance** - Control the paint, control the game
+3. **Win Percentage** - Consistency matters
+4. **Rebound Differential** - Win the boards, win the game
+5. **Defensive Pressure** - Steals + blocks create turnovers
+
+**Key Insights:**
+
+**1. Paint Dominance is the Differentiator**
+- Paint dominance (paint pts - opponent paint pts) is #2 feature
+- Controlling the paint separates champions from contenders
+- Physical presence inside remains crucial despite three-point era
 
 **2. Efficiency Over Volume**
 - Offensive and defensive efficiency are critical
 - Points per possession matters more than raw PPG
 - Elite model confirms modern analytics principles
 
-**3. Paint Dominance**
-- Points in the paint (new elite feature) is crucial
-- Second chance points and offensive rebounds matter
-- Physical presence in the paint separates champions
-
-**4. The Complete Package**
+**3. The Complete Package**
 - Elite model uses 42 features to capture all aspects
 - Fast break points, turnover differential, 3-point shooting
 - No single stat dominates - basketball is multidimensional

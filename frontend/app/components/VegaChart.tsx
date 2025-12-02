@@ -16,8 +16,19 @@ export default function VegaChart({ spec }: VegaChartProps) {
 
   useEffect(() => {
     if (isClient && containerRef.current && spec) {
+      const containerWidth = containerRef.current.offsetWidth
+
+      const responsiveSpec = {
+        ...spec,
+        width: spec.width === 'container' ? containerWidth - 40 : spec.width,
+        autosize: {
+          type: 'fit',
+          contains: 'padding'
+        }
+      }
+
       import('vega-embed').then(({ default: embed }) => {
-        embed(containerRef.current!, spec, {
+        embed(containerRef.current!, responsiveSpec, {
           actions: false,
           renderer: 'svg'
         }).catch(console.error)
@@ -29,5 +40,5 @@ export default function VegaChart({ spec }: VegaChartProps) {
     return <div className="h-96 flex items-center justify-center">Loading chart...</div>
   }
 
-  return <div ref={containerRef} />
+  return <div ref={containerRef} className="w-full" />
 }
