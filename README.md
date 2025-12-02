@@ -1,46 +1,46 @@
 # NBA Championship Predictor
 
-**COP 4283 Data Science Final Project**
+COP 4283 Data Science Final Project
 
 An end-to-end data science project that predicts NBA championship winners using machine learning and interactive visualizations.
 
 ## Overview
 
 This project demonstrates the complete data science workflow:
-1. **Data Collection**: 60,000+ NBA games from Kaggle dataset
-2. **Data Processing**: Advanced feature engineering with 42 elite metrics
-3. **Analysis**: Comprehensive Jupyter notebook with exploratory data analysis and insights
-4. **Machine Learning**: Elite ensemble models with perfect 1.000 ROC-AUC
-5. **Visualization**: Interactive web application with Vega-Lite dashboards
+1. Data Collection: 60,000+ NBA games from Kaggle dataset
+2. Data Processing: Advanced feature engineering with 42 elite metrics
+3. Analysis: Comprehensive Jupyter notebook with exploratory data analysis and insights
+4. Machine Learning: Elite ensemble models with perfect 1.000 ROC-AUC
+5. Visualization: Interactive web application with Vega-Lite dashboards
 
-**Key Finding**: Paint dominance is the #2 predictor of NBA championships (after wins/win%), showing that controlling the paint separates champions from contenders.
+Key Finding: Paint dominance is the #2 predictor of NBA championships (after wins/win%), showing that controlling the paint separates champions from contenders.
 
 ## Tech Stack
 
 ### Backend
-- **Python 3.12**
-- **FastAPI** - Modern web framework for building APIs
-- **scikit-learn** - Machine learning library
-- **pandas** - Data manipulation and analysis
-- **kagglehub** - Kaggle dataset integration
-- **SQLite** - Database (NBA statistics)
+- Python 3.12
+- FastAPI - Modern web framework for building APIs
+- scikit-learn - Machine learning library
+- pandas - Data manipulation and analysis
+- kagglehub - Kaggle dataset integration
+- SQLite - Database (NBA statistics)
 
 ### Frontend
-- **Next.js 14** - React framework
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
+- Next.js 14 - React framework
+- TypeScript - Type-safe JavaScript
+- Tailwind CSS - Utility-first CSS framework
 
 ### Machine Learning
-- **Model**: Elite Ensemble (XGBoost + LightGBM + CatBoost)
-- **Features**: 42 advanced features including efficiency metrics, rebound rates, turnover differential, momentum, paint points, fast break points, second chance points
-- **ROC-AUC**: 1.000 (perfect discrimination)
-- **Optimization**: Optuna hyperparameter tuning (30 trials per model)
+- Model: Elite Ensemble (XGBoost + LightGBM + CatBoost)
+- Features: 42 advanced features including efficiency metrics, rebound rates, turnover differential, momentum, paint points, fast break points, second chance points
+- ROC-AUC: 1.000 (perfect discrimination)
+- Optimization: Optuna hyperparameter tuning (30 trials per model)
 
 ## Project Structure
 
 ```
 finalproject/
-├── nba_championship_analysis.ipynb  # 📊 Jupyter notebook with full analysis
+├── nba_championship_analysis.ipynb  # Jupyter notebook with full analysis
 ├── backend/
 │   ├── app/
 │   │   └── main.py                  # FastAPI application
@@ -74,18 +74,18 @@ finalproject/
 └── requirements.txt
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
-> **For group members**: See [SETUP.md](SETUP.md) for detailed setup instructions with screenshots and troubleshooting.
+For group members: See [SETUP.md](SETUP.md) for detailed setup instructions with screenshots and troubleshooting.
 
 ### Option 1: Automated Setup (Recommended)
 
-**Windows:**
+Windows:
 ```batch
 run.bat
 ```
 
-**Linux/Mac:**
+Linux/Mac:
 ```bash
 chmod +x run.sh
 ./run.sh
@@ -100,7 +100,7 @@ The script will automatically:
 
 ### Option 2: Manual Setup
 
-**Terminal 1 - Backend:**
+Terminal 1 - Backend:
 ```bash
 # Linux/Mac
 source .venv/bin/activate
@@ -111,7 +111,7 @@ python -m uvicorn backend.app.main:app --port 8000 --reload
 python -m uvicorn backend.app.main:app --port 8000 --reload
 ```
 
-**Terminal 2 - Frontend:**
+Terminal 2 - Frontend:
 ```bash
 cd frontend
 npm install
@@ -120,9 +120,9 @@ npm run dev
 
 Visit http://localhost:3000 to use the application.
 
-## 📊 Data Analysis Notebook
+## Data Analysis Notebook
 
-**Jupyter Notebook**: `nba_championship_analysis.ipynb`
+Jupyter Notebook: `nba_championship_analysis.ipynb`
 
 A comprehensive analysis notebook demonstrating the complete data science workflow:
 
@@ -176,31 +176,31 @@ pip install jupyter
 jupyter notebook nba_championship_analysis.ipynb
 ```
 
-**Interactive Features**:
+Interactive Features:
 - Executable code cells
 - Matplotlib/Seaborn visualizations
 - Statistical analysis outputs
 - Markdown narrative with insights
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
-- **Python 3.12+** (Download from python.org)
-- **Node.js 18+** (Download from nodejs.org)
-- **Kaggle API credentials** (Required for data download)
+- Python 3.12+ (Download from python.org)
+- Node.js 18+ (Download from nodejs.org)
+- Kaggle API credentials (Required for data download)
   - Create account at kaggle.com
   - Go to Account Settings > API > Create New Token
   - Place `kaggle.json` in `~/.kaggle/` (Linux/Mac) or `C:\Users\YourName\.kaggle\` (Windows)
   - See [SETUP.md](SETUP.md) for detailed instructions
-- **~1GB free disk space** (for dataset)
+- About 1GB free disk space (for dataset)
 
 ### First Time Setup
 
-1. **Download or clone this project**
+1. Download or clone this project
 
-2. **Setup Kaggle API credentials** (see Prerequisites above)
+2. Setup Kaggle API credentials (see Prerequisites above)
 
-3. **Run the automated script** (see Quick Start above)
+3. Run the automated script (see Quick Start above)
    - The script handles all setup automatically
    - Downloads dataset on first run
    - Pre-trained models are included, no training needed
@@ -219,7 +219,7 @@ source .venv/bin/activate
 python backend/train_elite_model.py
 ```
 
-**Note**: Training takes approximately 10-15 minutes and requires the Kaggle NBA dataset (downloads automatically).
+Note: Training takes approximately 10-15 minutes and requires the Kaggle NBA dataset (downloads automatically).
 
 ## API Endpoints
 
@@ -232,7 +232,7 @@ Health check endpoint
 ### GET `/predictions`
 Get championship predictions for the latest season
 
-**Response:**
+Response:
 ```json
 [
   {
@@ -251,7 +251,7 @@ Get championship predictions for the latest season
 ### GET `/seasons`
 Get list of all available seasons with predictions
 
-**Response:**
+Response:
 ```json
 {
   "seasons": [2022, 2021, 2020, ..., 2003],
@@ -262,12 +262,12 @@ Get list of all available seasons with predictions
 ### GET `/predictions/{season}`
 Get championship predictions for a specific season
 
-**Example:** `/predictions/2022`
+Example: `/predictions/2022`
 
 ### GET `/actual-champion/{season}`
 Get the actual champion for a season with model predictions
 
-**Response:**
+Response:
 ```json
 {
   "season": 2022,
@@ -294,41 +294,41 @@ Make a custom prediction based on team statistics (accepts 33 features, pads to 
 ## Model Details
 
 ### Training Data
-- **Dataset**: Kaggle NBA Basketball Database
-- **Seasons**: 2002-2022
-- **Total Samples**: 1,481 team-seasons
-- **Champions**: 20 (1.35% of dataset)
+- Dataset: Kaggle NBA Basketball Database
+- Seasons: 2002-2022
+- Total Samples: 1,481 team-seasons
+- Champions: 20 (1.35% of dataset)
 
 ### Elite Features (42 total)
 
-**Core Performance (8):**
+Core Performance (8):
 - wins, win_pct, ppg, opp_ppg, point_diff, fg_pct, ft_pct, fg3_pct
 
-**Advanced Stats (11):**
+Advanced Stats (11):
 - fg3m, opp_fg3_pct, fg3_diff, apg, rpg, spg, bpg, oreb, dreb, reb_diff, tov
 
-**Efficiency Metrics (7):**
+Efficiency Metrics (7):
 - oreb_rate, dreb_rate, tov_diff, ast_tov_ratio, defensive_pressure, pressure_diff, ft_rate
 
-**Advanced Efficiency (7):**
+Advanced Efficiency (7):
 - off_efficiency, def_efficiency, efficiency_diff, discipline, recent_win_pct, recent_point_diff, momentum
 
-**Elite Additions (9):**
+Elite Additions (9):
 - pts_paint, pts_2nd_chance, pts_fb, pts_off_to, paint_dominance, 2nd_chance_edge, transition_edge, defensive_points, paint_pct
 
 ### Model Performance
-- **ROC-AUC**: 1.000 (perfect discrimination)
-- **Individual Models**:
+- ROC-AUC: 1.000 (perfect discrimination)
+- Individual Models:
   - XGBoost: 0.9556
   - LightGBM: 1.000
   - CatBoost: 1.000
   - Ensemble: 1.000
-- **Algorithm**: Elite Ensemble (averaged predictions from 3 optimized models)
-- **Optimization**: Optuna hyperparameter tuning with 30 trials each
+- Algorithm: Elite Ensemble (averaged predictions from 3 optimized models)
+- Optimization: Optuna hyperparameter tuning with 30 trials each
 
 ### Known Champions (Training Data)
 The model was trained on championship data from 2002-2022, including:
-- 2021-22: Golden State Warriors ✓
+- 2021-22: Golden State Warriors (correct prediction)
 - 2020-21: Milwaukee Bucks
 - 2019-20: Los Angeles Lakers
 - 2018-19: Toronto Raptors
@@ -337,18 +337,18 @@ The model was trained on championship data from 2002-2022, including:
 ## Features
 
 ### Current Implementation
-- ✅ **Comprehensive Jupyter notebook** with full data science workflow
-- ✅ **Historical NBA data analysis** (2003-2022, 60,000+ games)
-- ✅ **Elite ensemble machine learning** (XGBoost + LightGBM + CatBoost)
-- ✅ **Hyperparameter optimization** with Optuna (30 trials per model)
-- ✅ **REST API** for predictions with FastAPI
-- ✅ **Modern web interface** with NBA-themed design
-- ✅ **Interactive Vega-Lite visualizations** with tooltips
-- ✅ **Season selector** (2003-2022 historical data)
-- ✅ **Conference filter** (East/West/All)
-- ✅ **Feature importance rankings** (42 features)
-- ✅ **Real-time championship probability** calculations
-- ✅ **Multiple pages**: Predictions, Features, Historical Accuracy, About
+- Comprehensive Jupyter notebook with full data science workflow
+- Historical NBA data analysis (2003-2022, 60,000+ games)
+- Elite ensemble machine learning (XGBoost + LightGBM + CatBoost)
+- Hyperparameter optimization with Optuna (30 trials per model)
+- REST API for predictions with FastAPI
+- Modern web interface with NBA-themed design
+- Interactive Vega-Lite visualizations with tooltips
+- Season selector (2003-2022 historical data)
+- Conference filter (East/West/All)
+- Feature importance rankings (42 features)
+- Real-time championship probability calculations
+- Multiple pages: Predictions, Features, Historical Accuracy, About
 
 ### Potential Enhancements
 - Add player-level statistics
@@ -358,15 +358,15 @@ The model was trained on championship data from 2002-2022, including:
 - User authentication
 - Save/compare predictions
 
-## 📊 Data Sources & Methodology
+## Data Sources & Methodology
 
 ### Dataset
-**Source**: [NBA Basketball Database](https://www.kaggle.com/datasets/wyattowalsh/basketball) by wyattowalsh
-**Size**: 697MB compressed, 60,192 regular season games
-**Time Range**: 1946-2023 (77 seasons)
-**Format**: SQLite database with 16 tables
+Source: [NBA Basketball Database](https://www.kaggle.com/datasets/wyattowalsh/basketball) by wyattowalsh
+Size: 697MB compressed, 60,192 regular season games
+Time Range: 1946-2023 (77 seasons)
+Format: SQLite database with 16 tables
 
-**Key Tables Used**:
+Key Tables Used:
 - `game` - 60K+ regular season games with 55 stat columns
 - `team` - 30 NBA teams with metadata
 - Season types separated (Regular Season vs Playoffs)
@@ -405,53 +405,53 @@ The model was trained on championship data from 2002-2022, including:
 
 ### Analysis Dimensions
 
-**1. Descriptive Statistics**
-- Team performance distributions
-- League-wide trends over time
-- Championship contender characteristics
+1. Descriptive Statistics
+   - Team performance distributions
+   - League-wide trends over time
+   - Championship contender characteristics
 
-**2. Predictive Modeling**
-- Train on seasons 2002-2021
-- Predict 2021-22 champion
-- Cross-validate on historical seasons
+2. Predictive Modeling
+   - Train on seasons 2002-2021
+   - Predict 2021-22 champion
+   - Cross-validate on historical seasons
 
-**3. Feature Importance**
-- XGBoost feature importances
-- Identify key championship predictors
-- Validate against basketball analytics
+3. Feature Importance
+   - XGBoost feature importances
+   - Identify key championship predictors
+   - Validate against basketball analytics
 
-## 🔍 Key Findings & Insights
+## Key Findings & Insights
 
 ### What Wins Championships?
 
-**Top 5 Features (by importance):**
-1. **Wins** - Championship teams win games (obviously)
-2. **Paint Dominance** - Control the paint, control the game
-3. **Win Percentage** - Consistency matters
-4. **Rebound Differential** - Win the boards, win the game
-5. **Defensive Pressure** - Steals + blocks create turnovers
+Top 5 Features (by importance):
+1. Wins - Championship teams win games (obviously)
+2. Paint Dominance - Control the paint, control the game
+3. Win Percentage - Consistency matters
+4. Rebound Differential - Win the boards, win the game
+5. Defensive Pressure - Steals + blocks create turnovers
 
-**Key Insights:**
+Key Insights:
 
-**1. Paint Dominance is the Differentiator**
-- Paint dominance (paint pts - opponent paint pts) is #2 feature
-- Controlling the paint separates champions from contenders
-- Physical presence inside remains crucial despite three-point era
+1. Paint Dominance is the Differentiator
+   - Paint dominance (paint pts - opponent paint pts) is #2 feature
+   - Controlling the paint separates champions from contenders
+   - Physical presence inside remains crucial despite three-point era
 
-**2. Efficiency Over Volume**
-- Offensive and defensive efficiency are critical
-- Points per possession matters more than raw PPG
-- Elite model confirms modern analytics principles
+2. Efficiency Over Volume
+   - Offensive and defensive efficiency are critical
+   - Points per possession matters more than raw PPG
+   - Elite model confirms modern analytics principles
 
-**3. The Complete Package**
-- Elite model uses 42 features to capture all aspects
-- Fast break points, turnover differential, 3-point shooting
-- No single stat dominates - basketball is multidimensional
+3. The Complete Package
+   - Elite model uses 42 features to capture all aspects
+   - Fast break points, turnover differential, 3-point shooting
+   - No single stat dominates - basketball is multidimensional
 
 ### Elite Model Performance
 
-**Metrics**:
-- ROC-AUC: **1.000** (perfect discrimination)
+Metrics:
+- ROC-AUC: 1.000 (perfect discrimination)
 - Individual Models:
   - XGBoost: 0.9556
   - LightGBM: 1.000
@@ -459,28 +459,28 @@ The model was trained on championship data from 2002-2022, including:
 - Ensemble Method: Averaged predictions from all 3 models
 - Hyperparameter Optimization: Optuna with 30 trials per model
 
-**2021-22 Season Prediction**:
-- Golden State Warriors: **65.95% probability**
-- **Result**: ✓ CORRECT - Warriors won 2021-22 championship
+2021-22 Season Prediction:
+- Golden State Warriors: 65.95% probability
+- Result: CORRECT - Warriors won 2021-22 championship
 - Model correctly ranked them #1 before playoffs
 
 ### Model Insights
 
-**Strengths**:
-1. **Perfect ROC-AUC** - Flawless at ranking championship probability
-2. **Elite Features** - Paint points, fast break, second chance give comprehensive view
-3. **Ensemble Power** - Combining 3 models reduces overfitting
-4. **Hyperparameter Tuned** - Optuna optimization maximizes each model
+Strengths:
+1. Perfect ROC-AUC - Flawless at ranking championship probability
+2. Elite Features - Paint points, fast break, second chance give comprehensive view
+3. Ensemble Power - Combining 3 models reduces overfitting
+4. Hyperparameter Tuned - Optuna optimization maximizes each model
 
-**Limitations**:
+Limitations:
 Regular season stats don't capture:
-1. **Playoff intensity** - Different game in 7-game series
-2. **Injuries** - Key player injuries change everything
-3. **Matchups** - Some teams match up poorly against specific opponents
-4. **Momentum** - Hot/cold streaks at the right time
-5. **Coaching** - Strategic adjustments in playoffs
+1. Playoff intensity - Different game in 7-game series
+2. Injuries - Key player injuries change everything
+3. Matchups - Some teams match up poorly against specific opponents
+4. Momentum - Hot/cold streaks at the right time
+5. Coaching - Strategic adjustments in playoffs
 
-**Key Takeaway**: Elite model identifies championship contenders with exceptional accuracy. Perfect ROC-AUC means the probability rankings are optimal given regular season data.
+Key Takeaway: Elite model identifies championship contenders with exceptional accuracy. Perfect ROC-AUC means the probability rankings are optimal given regular season data.
 
 ## Development
 
