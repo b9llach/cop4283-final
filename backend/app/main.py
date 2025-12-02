@@ -75,9 +75,14 @@ def load_resources():
             metadata = json.load(f)
             feature_names = metadata['feature_names']
 
-        with open(CONFIG_PATH, 'r') as f:
-            config = json.load(f)
-            db_path = config['db_path']
+        # Database is optional - only needed for /teams endpoint
+        if CONFIG_PATH.exists():
+            with open(CONFIG_PATH, 'r') as f:
+                config = json.load(f)
+                db_path = config.get('db_path')
+        else:
+            db_path = None
+            print("Warning: config.json not found - /teams endpoint will not work")
 
         print(f"Elite ensemble models loaded successfully")
         print(f"ROC-AUC Scores:")
@@ -293,6 +298,19 @@ async def get_feature_importance():
 async def get_teams():
     """Get list of all NBA teams"""
     try:
+        # If database not available, get teams from predictions CSV
+        if db_path is None:
+            df = pd.read_csv(PREDICTIONS_PATH)
+            teams = []
+            for idx, (name, abbr) in enumerate(zip(df['full_name'], df['abbreviation'])):
+                teams.append(TeamInfo(
+                    id=idx + 1,
+                    full_name=name,
+                    abbreviation=abbr
+                ))
+            return teams
+
+        # Use database if available
         conn = sqlite3.connect(db_path)
         query = "SELECT id, full_name, abbreviation FROM team ORDER BY full_name"
         df = pd.read_sql_query(query, conn)

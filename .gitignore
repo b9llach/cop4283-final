@@ -9,6 +9,11 @@ venv/
 ENV/
 env/
 
+# Large data files (not needed for running the app)
+data/nba.sqlite
+data/config.json
+*.db
+
 # Claude
 CLAUDE.md
 .claude/
