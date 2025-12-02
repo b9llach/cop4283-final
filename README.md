@@ -4,6 +4,10 @@ COP 4283 Data Science Final Project
 
 An end to end data science project that predicts NBA championship winners using machine learning and interactive visualizations.
 
+# Website Demo
+
+https://www.youtube.com/watch?v=1LomTtaSzm4
+
 ## Overview
 
 This project demonstrates the complete data science workflow:
